@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'android-apt'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -26,4 +26,14 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.1.0'
     testCompile 'junit:junit:4.12'
+    //注解
+    compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.android.support:design:25.2.0'
+    //圆形图片
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    //刷新
+    compile 'in.srain.cube:ptr-load-more:1.0.6'
+
+
 }
