@@ -36,7 +36,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        headView.setTitleText("首页");
+        headView.setTitleText("微课堂");
         headView.isShowHeadImage(true);
         FragmentPagerAdapter adapter = new TabPageIndicatorAdapter(getSupportFragmentManager(), topName);
         viewPager.setAdapter(adapter);
