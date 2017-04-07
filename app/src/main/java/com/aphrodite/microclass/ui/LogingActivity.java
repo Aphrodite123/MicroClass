@@ -7,4 +7,5 @@ import com.aphrodite.microclass.base.BaseActivtity;
  */
 
 public class LogingActivity extends BaseActivtity {
+
 }

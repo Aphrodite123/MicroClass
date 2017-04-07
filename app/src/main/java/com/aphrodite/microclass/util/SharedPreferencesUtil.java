@@ -49,7 +49,6 @@ public class SharedPreferencesUtil {
         } else if ("Long".equals(type)) {
             editor.putLong(key, (Long) object);
         }
-
         editor.commit();
     }
 

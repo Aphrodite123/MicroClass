@@ -79,7 +79,6 @@ public class ActivityManagerUtil {
         }
         activityStack.clear();
     }
-
     /**
      * 退出应用程序
      */

@@ -5,4 +5,5 @@ package com.aphrodite.microclass.net;
  */
 
 public interface RetrofitAPI {
+
 }
