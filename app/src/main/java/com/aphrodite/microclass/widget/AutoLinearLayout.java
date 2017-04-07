@@ -51,7 +51,6 @@ public class AutoLinearLayout extends LinearLayout {
         invalidate();
         return super.onTouchEvent(event);
     }
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);

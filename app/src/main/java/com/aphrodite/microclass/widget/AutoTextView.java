@@ -52,7 +52,6 @@ public class AutoTextView extends AppCompatTextView {
         invalidate();
         return super.onTouchEvent(event);
     }
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
