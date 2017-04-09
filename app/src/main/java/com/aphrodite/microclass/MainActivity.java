@@ -1,6 +1,5 @@
 package com.aphrodite.microclass;
 
-import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -46,6 +45,18 @@ public class MainActivity extends BaseActivity {
     SelectPhotoDialog photoDialog;
     private boolean isShowDetail = false;//是否显示查看原图
     List<String> topName = Arrays.asList("头条", "视频", "开心一刻", "浏览记录");
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //设置透明状态栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window window = getWindow();
+            window.setFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+    }
 
     @Override
     public int getContentView() {
