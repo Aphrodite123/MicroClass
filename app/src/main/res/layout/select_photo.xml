@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:background="#00000000"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/Indigo_nav_color"
+        android:gravity="center"
+        android:padding="10dip"
+        android:text="@string/Select_photos"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_huge_size"
+        android:visibility="gone" />
+
+    <com.aphrodite.microclass.widget.AutoTextView
+        android:id="@+id/photo_detail_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_base_bg"
+        android:gravity="center"
+        android:padding="10dip"
+        android:text="查看原图"
+        android:textColor="@color/Indigo_nav_color"
+        android:textSize="@dimen/text_huge_size"
+        android:visibility="gone" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#00000000" />
+    <com.aphrodite.microclass.widget.AutoTextView
+        android:id="@+id/photo_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_base_bg"
+        android:gravity="center"
+        android:padding="10dip"
+        android:text="@string/photograph"
+        android:textColor="@color/Indigo_nav_color"
+        android:textSize="@dimen/text_huge_size" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#00000000" />
+
+    <com.aphrodite.microclass.widget.AutoTextView
+        android:id="@+id/select_photo_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_base_bg"
+        android:gravity="center"
+        android:padding="10dip"
+        android:text="@string/Select_from_album"
+        android:textColor="@color/Indigo_nav_color"
+        android:textSize="@dimen/text_huge_size" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#00000000" />
+
+    <com.aphrodite.microclass.widget.AutoTextView
+        android:id="@+id/cancle_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/item_base_bg"
+        android:gravity="center"
+        android:padding="10dip"
+        android:text="@string/eliminate"
+        android:textColor="@color/text_primary_light"
+        android:textSize="@dimen/text_huge_size" />
+</LinearLayout>

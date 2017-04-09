@@ -50,6 +50,7 @@ public abstract class BaseFragment extends Fragment {
      */
     protected void   initRefreshView(PtrFrameLayout ptrFrameLayout) {
         this.ptrFrameLayout = ptrFrameLayout;
+        ptrFrameLayout.setMode(PtrFrameLayout.Mode.BOTH);
         mPtrClassicHeader = new PtrClassicDefaultHeader(getContext());
         ptrFrameLayout.setHeaderView(mPtrClassicHeader);
         ptrFrameLayout.addPtrUIHandler(mPtrClassicHeader);

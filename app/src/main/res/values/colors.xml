@@ -18,6 +18,7 @@
     <color name="text_secondary_dark">#b3ffffff</color>
     <color name="text_secondary_disabled_light">#24000000</color>
     <color name="text_secondary_disabled_dark">#36ffffff</color>
+    <color name="division_line">#e5e5e5</color>
 
     <color name="selectable_item_background_general_normal_light">@android:color/white</color>
     <color name="selectable_item_background_general_pressed_light">#ffeeeeee</color>

@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">MicroClass</string>
+    <string name="app_name">微课堂</string>
+    <string name="eliminate">取消</string>
+    <string name="Select_photos">选择照片</string>
+    <string name="photograph">拍照</string>
+    <string name="Select_from_album">从相册中选择</string>
 </resources>
