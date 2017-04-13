@@ -33,10 +33,10 @@ public class RetrofitMethod {
     public static void uploadPic(String filePath,
                                            RetrofitService.OnResponeListener<BaseResponse> listener) {
         File file = new File(filePath);
-        RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpg"), file);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
         String descriptionString = file.getName();
-        RequestBody description = RequestBody.create(MediaType.parse("image/jpg"), descriptionString);
+        RequestBody description = RequestBody.create(MediaType.parse("multipart/form-data"), descriptionString);
         RetrofitService retrofitService = new RetrofitService(BaseResponse.class);
         retrofitService.retrofitPost(RetrofitAPIManager.provideClientApi("2").uploadPic( description, body), listener);
     }

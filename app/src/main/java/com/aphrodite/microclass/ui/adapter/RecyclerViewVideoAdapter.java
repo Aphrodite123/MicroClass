@@ -64,7 +64,7 @@ if(null!=data.play_url&&null!=data.res_title&&null!=data.res_cover_url){
 }else{
 
     holder.jcVideoPlayer.setUp(
-            VideoConstant.videoUrls[0][7],
+           "http://192.168.1.19:8080/doc/03.mp4",
             VideoConstant.videoTitles[0][7]);
     Picasso.with(holder.jcVideoPlayer.getContext())
             .load(VideoConstant.videoThumbs[0][7])
