@@ -47,4 +47,5 @@ dependencies {
     compile 'cn.finalteam:galleryfinal:1.4.6'
 
 
+    compile project(':LandscapeVideoCamera')
 }

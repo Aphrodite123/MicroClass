@@ -96,8 +96,6 @@ public class CommonFunction {
                 .load(uri)
                 .placeholder(context.getResources().getDrawable(R.drawable.image_placeholder))
                 .error(context.getResources().getDrawable(R.drawable.image_placeholder))
-                .resize(50, 50)
-                .centerInside()
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .into(imageView);
     }

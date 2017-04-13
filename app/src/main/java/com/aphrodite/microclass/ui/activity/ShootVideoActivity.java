@@ -203,7 +203,9 @@ public class ShootVideoActivity extends Activity implements View.OnClickListener
             mediaRecorder.start();
             Toast.makeText(this, "开始录制", Toast.LENGTH_SHORT).show();
         } catch (IllegalStateException e) {
+            Log.e("dataerror",e.toString()+"333333");
             this.finish();
+
             Toast.makeText(this, "不能录制视频!", Toast.LENGTH_SHORT).show();
         }
 

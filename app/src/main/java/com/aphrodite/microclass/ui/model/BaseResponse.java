@@ -5,5 +5,5 @@ package com.aphrodite.microclass.ui.model;
  */
 
 public class BaseResponse {
-    String stat;
+    String message;
 }

@@ -34,4 +34,15 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:layout_centerInParent="true"
+        android:src="@drawable/ic_favorite_white_24dp"
+        app:borderWidth="0dp"
+        app:backgroundTint="#FF4011"
+        app:rippleColor="#33728dff"
+        app:elevation="8dp"
+        app:pressedTranslationZ="16dp"
+        />
 </LinearLayout>

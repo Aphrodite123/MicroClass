@@ -1,9 +1,7 @@
 package com.aphrodite.microclass;
 
+import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -11,8 +9,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.aphrodite.microclass.base.BaseActivity;
@@ -24,8 +20,12 @@ import com.aphrodite.microclass.ui.adapter.TabPageIndicatorAdapter;
 import com.aphrodite.microclass.ui.model.BaseResponse;
 import com.aphrodite.microclass.util.CommonFunction;
 import com.aphrodite.microclass.util.PermissionUtil;
+import com.aphrodite.microclass.widget.AutoTextView;
 import com.aphrodite.microclass.widget.HeadView;
 import com.aphrodite.microclass.widget.dialog.SelectPhotoDialog;
+import com.jmolsmobile.landscapevideocapture.VideoCaptureActivity;
+import com.jmolsmobile.landscapevideocapture.configuration.CaptureConfiguration;
+import com.jmolsmobile.landscapevideocapture.configuration.PredefinedCaptureConfigurations;
 
 import java.io.File;
 import java.util.Arrays;
@@ -52,17 +52,20 @@ public class MainActivity extends BaseActivity {
     private boolean isShowDetail = false;//是否显示查看原图
     List<String> topName = Arrays.asList("头条", "视频", "开心一刻", "浏览记录");
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //设置透明状态栏
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window window = getWindow();
-            window.setFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
-    }
+    @BindView(R.id.autograph_text)
+    AutoTextView  autograph_text;
+
+//    @Override
+//    protected void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        //设置透明状态栏
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            Window window = getWindow();
+//            window.setFlags(
+//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+//                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//        }
+//    }
 
     @Override
     public int getContentView() {
@@ -88,6 +91,7 @@ public class MainActivity extends BaseActivity {
             }
         });
         img_avatar_nav.setOnClickListener(this);
+        autograph_text.setOnClickListener(this);
     }
 
     @Override
@@ -103,11 +107,22 @@ public class MainActivity extends BaseActivity {
             case R.id.img_avatar_nav:
                 showDialog();
                 break;
+            case R.id.autograph_text:
+                startVideoCaptureActivity();
+                break;
         }
     }
 
 
+    private void startVideoCaptureActivity() {
+        final CaptureConfiguration config = createCaptureConfiguration();
+        final String filename = "测试";
 
+        final Intent intent = new Intent(MainActivity.this, VideoCaptureActivity.class);
+        intent.putExtra(VideoCaptureActivity.EXTRA_CAPTURE_CONFIGURATION, config);
+        intent.putExtra(VideoCaptureActivity.EXTRA_OUTPUT_FILENAME, filename);
+        startActivityForResult(intent, 101);
+    }
     public void showDialog() {
 
         if (null != photoDialog) {
@@ -193,4 +208,22 @@ public class MainActivity extends BaseActivity {
         });
 
     }
+
+    private CaptureConfiguration createCaptureConfiguration() {
+        CaptureConfiguration.Builder builder = new CaptureConfiguration.Builder(PredefinedCaptureConfigurations.CaptureResolution.RES_1080P, PredefinedCaptureConfigurations.CaptureQuality.HIGH);
+        return builder.build();
+    }
+    private PredefinedCaptureConfigurations.CaptureQuality getQuality(int position) {
+        final PredefinedCaptureConfigurations.CaptureQuality[] quality = new PredefinedCaptureConfigurations.CaptureQuality[]{PredefinedCaptureConfigurations.CaptureQuality.HIGH, PredefinedCaptureConfigurations.CaptureQuality.MEDIUM,
+                PredefinedCaptureConfigurations.CaptureQuality.LOW};
+        return quality[position];
+    }
+
+    private PredefinedCaptureConfigurations.CaptureResolution getResolution(int position) {
+        final PredefinedCaptureConfigurations.CaptureResolution[] resolution = new PredefinedCaptureConfigurations.CaptureResolution[]{PredefinedCaptureConfigurations.CaptureResolution.RES_1080P,
+                PredefinedCaptureConfigurations.CaptureResolution.RES_720P, PredefinedCaptureConfigurations.CaptureResolution.RES_480P};
+        return resolution[position];
+    }
+
+
 }
