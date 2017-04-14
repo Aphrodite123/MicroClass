@@ -24,7 +24,7 @@ public interface RetrofitAPI {
      */
 
     @Multipart
-    @POST("/sma-upload//AppUpFile")
+    @POST("/sma-upload/simpleFileupload")
     Call<BaseResponse> uploadPic( @Part("description") RequestBody description,
                                            @Part MultipartBody.Part file);
 }

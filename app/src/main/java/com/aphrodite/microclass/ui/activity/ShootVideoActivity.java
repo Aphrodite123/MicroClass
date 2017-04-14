@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,8 +20,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aphrodite.microclass.R;
-import com.aphrodite.microclass.widget.CameraPreview;
+import com.aphrodite.microclass.util.CommonFunction;
 import com.aphrodite.microclass.util.FileUtils;
+import com.aphrodite.microclass.widget.CameraPreview;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -108,6 +108,7 @@ public class ShootVideoActivity extends Activity implements View.OnClickListener
      * 初始化控件
      */
     private void initView() {
+        Log.e("dataerror","initView");
         videoPhoto = (ImageView) findViewById(R.id.shoot_video_thumbnail_iv);
         layout = (FrameLayout) findViewById(R.id.shoot_video_framelay);
         videoPlay = (ImageView) findViewById(R.id.pouse_or_stop_iv);
@@ -115,10 +116,11 @@ public class ShootVideoActivity extends Activity implements View.OnClickListener
         back = (Button) findViewById(R.id.shoot_video_cancel_btn);
         exchangeIV = (ImageView) findViewById(R.id.shoot_video_self_iv);
         loadBtn = (Button) findViewById(R.id.shoot_video_comfir_btn);
-
+        loadBtn.setOnClickListener(this);
         exchangeIV.setOnClickListener(this);
         back.setOnClickListener(this);
         videoPlay.setOnClickListener(this);
+        videoPhoto.setOnClickListener(this);
         initCamera();//初始化照相机
         path = FileUtils.getSDPath() + "";
         fileName = new SimpleDateFormat("yyyyMMddHHmmss").format(System.currentTimeMillis()) + ".mp4";
@@ -129,6 +131,7 @@ public class ShootVideoActivity extends Activity implements View.OnClickListener
      */
     private void initCamera() {
         camera = Camera.open();
+        Log.e("dataerror","camera"+camera);
         preview = new CameraPreview(this, camera);
         preview.setFocusable(false);
         preview.setEnabled(false);
@@ -136,7 +139,7 @@ public class ShootVideoActivity extends Activity implements View.OnClickListener
         cameraParams = camera.getParameters();
         if (Build.VERSION.SDK_INT >= 14) {
             cameraParams.setFocusMode("auto");
-
+            Log.e("dataerror","cameraParams"+cameraParams);
 //            camera.autoFocus(myAutoFocusCallback);
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -188,8 +191,12 @@ public class ShootVideoActivity extends Activity implements View.OnClickListener
         mediaRecorder.setVideoEncodingBitRate(500 * 1024);
 
         mediaRecorder.setPreviewDisplay(preview.getHolder().getSurface());
-        videoPath = path + fileName;//视频本地路径
+        File file = getSaveFile(System.currentTimeMillis()+"Mircrovideo.mp4");
+        videoPath = file.getPath();//视频本地路径
+
+        Log.e("dataerror","videoPath   "+videoPath);
         mediaRecorder.setOutputFile(videoPath);
+
         try {
             mediaRecorder.prepare();
             timer.setVisibility(View.VISIBLE);
@@ -203,9 +210,7 @@ public class ShootVideoActivity extends Activity implements View.OnClickListener
             mediaRecorder.start();
             Toast.makeText(this, "开始录制", Toast.LENGTH_SHORT).show();
         } catch (IllegalStateException e) {
-            Log.e("dataerror",e.toString()+"333333");
             this.finish();
-
             Toast.makeText(this, "不能录制视频!", Toast.LENGTH_SHORT).show();
         }
 
@@ -369,7 +374,23 @@ public class ShootVideoActivity extends Activity implements View.OnClickListener
             case R.id.shoot_video_cancel_btn://取消
                 finish();
                 break;
+            case R.id.shoot_video_comfir_btn://确定
+                Toast.makeText(this, "确定 录制完成，已保存  ", Toast.LENGTH_SHORT).show();
+                //接口
+                //结束本页面
+                Intent intent1 = new Intent();
+                intent1.putExtra("videoPath", videoPath);//录制路径
 
+                intent1.putExtra("videoSeconds", allTime + "");//录制时间
+                try {
+                    String bitMapPath = saveVideoBitmap(CommonFunction.getVideoImg(videoPath));//获取bitmap的路径
+                    intent1.putExtra("bitMapPath", bitMapPath);//获取bitmap的路径
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                setResult(RESULT_OK, intent1);
+                finish();
+                break;
             case R.id.pouse_or_stop_iv://暂停或者停止播放
                 if (flag == 0) {//第一次点击状态
                     if (isControlEnable) {
@@ -390,31 +411,13 @@ public class ShootVideoActivity extends Activity implements View.OnClickListener
                     Log.d("ygy_path", videoPath);
                     //确定结束本页面,并将视频上传到服务器
                     loadBtn.setVisibility(View.VISIBLE);
-                    loadBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //接口
-                            //结束本页面
-                            Intent intent1 = new Intent();
-                            intent1.putExtra("videoPath", videoPath);//录制路径
-
-                            intent1.putExtra("videoSeconds", allTime + "");//录制时间
-                            try {
-                                String bitMapPath = saveVideoBitmap(getVideoImg(videoPath));//获取bitmap的路径
-                                intent1.putExtra("bitMapPath", bitMapPath);//获取bitmap的路径
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            setResult(RESULT_OK, intent1);
-                            finish();
-                        }
-                    });
 
                     videoPhoto.setVisibility(View.VISIBLE);
-                    videoPhoto.setImageBitmap(getVideoImg(videoPath));//得到保存后的视频缩略图
+                    videoPhoto.setImageBitmap(CommonFunction.getVideoImg(videoPath));//得到保存后的视频缩略图
                     videoPhoto.setOnClickListener(new View.OnClickListener() {//录像截图
                         @Override
                         public void onClick(View v) {
+                            Toast.makeText(ShootVideoActivity.this, "跳转播放  ", Toast.LENGTH_SHORT).show();
 //                            Intent intent = new Intent();
 //                            intent.putExtra("mrrck_videoPath", videoPath);
 //                            intent.setClass(ShootVideoActivity.this, TestVideoActivity.class);
@@ -429,30 +432,7 @@ public class ShootVideoActivity extends Activity implements View.OnClickListener
         }
     }
 
-    /**
-     * 获取视频缩略图*
-     */
-    public Bitmap getVideoImg(String filePath) {
-        Bitmap bitmap = null;
-        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        try {
-            retriever.setDataSource(filePath);
-            bitmap = retriever.getFrameAtTime();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                // retriever.release();
-            } catch (RuntimeException e) {
-                e.printStackTrace();
-            }
-        }
 
-
-        return bitmap;
-    }
 
     /**
      * 获取视频缩略图*路径
@@ -504,5 +484,31 @@ public class ShootVideoActivity extends Activity implements View.OnClickListener
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private File getSaveFile(String fileNmae)
+
+    {
+        File file = new File(getSaveFolder() + File.separator + fileNmae);
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    /**
+     * 获取文件夹对象
+     *
+     * @return 返回SD卡下的指定文件夹对象，若文件夹不存在则创建
+     */
+    public static String getSaveFolder() {
+        File dirFile = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "MircroClass");
+        if (!dirFile.exists()) {
+            dirFile.mkdirs();
+        }
+
+        return dirFile.getAbsolutePath();
     }
 }

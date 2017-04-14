@@ -45,7 +45,4 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     /** 照片选择***************begin   */
     compile 'cn.finalteam:galleryfinal:1.4.6'
-
-
-    compile project(':LandscapeVideoCamera')
 }

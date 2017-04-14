@@ -1,7 +1,9 @@
 package com.aphrodite.microclass;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -16,6 +18,7 @@ import com.aphrodite.microclass.base.ProjectApplication;
 import com.aphrodite.microclass.constant.Config;
 import com.aphrodite.microclass.net.RetrofitMethod;
 import com.aphrodite.microclass.net.RetrofitService;
+import com.aphrodite.microclass.ui.activity.ShootVideoActivity;
 import com.aphrodite.microclass.ui.adapter.TabPageIndicatorAdapter;
 import com.aphrodite.microclass.ui.model.BaseResponse;
 import com.aphrodite.microclass.util.CommonFunction;
@@ -23,9 +26,6 @@ import com.aphrodite.microclass.util.PermissionUtil;
 import com.aphrodite.microclass.widget.AutoTextView;
 import com.aphrodite.microclass.widget.HeadView;
 import com.aphrodite.microclass.widget.dialog.SelectPhotoDialog;
-import com.jmolsmobile.landscapevideocapture.VideoCaptureActivity;
-import com.jmolsmobile.landscapevideocapture.configuration.CaptureConfiguration;
-import com.jmolsmobile.landscapevideocapture.configuration.PredefinedCaptureConfigurations;
 
 import java.io.File;
 import java.util.Arrays;
@@ -53,7 +53,9 @@ public class MainActivity extends BaseActivity {
     List<String> topName = Arrays.asList("头条", "视频", "开心一刻", "浏览记录");
 
     @BindView(R.id.autograph_text)
-    AutoTextView  autograph_text;
+    AutoTextView autograph_text;
+    @BindView(R.id.floatingActionButton)
+    FloatingActionButton floatingActionButton;
 
 //    @Override
 //    protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,6 +94,7 @@ public class MainActivity extends BaseActivity {
         });
         img_avatar_nav.setOnClickListener(this);
         autograph_text.setOnClickListener(this);
+        floatingActionButton.setOnClickListener(this);
     }
 
     @Override
@@ -108,21 +111,16 @@ public class MainActivity extends BaseActivity {
                 showDialog();
                 break;
             case R.id.autograph_text:
-                startVideoCaptureActivity();
+                CommonFunction.redirectActivity(MainActivity.this, ShootVideoActivity.class, null);
+                break;
+            case R.id.floatingActionButton:
+                Intent intent = new Intent(MainActivity.this, ShootVideoActivity.class);
+                startActivityForResult(intent, 100);
                 break;
         }
     }
 
 
-    private void startVideoCaptureActivity() {
-        final CaptureConfiguration config = createCaptureConfiguration();
-        final String filename = "测试";
-
-        final Intent intent = new Intent(MainActivity.this, VideoCaptureActivity.class);
-        intent.putExtra(VideoCaptureActivity.EXTRA_CAPTURE_CONFIGURATION, config);
-        intent.putExtra(VideoCaptureActivity.EXTRA_OUTPUT_FILENAME, filename);
-        startActivityForResult(intent, 101);
-    }
     public void showDialog() {
 
         if (null != photoDialog) {
@@ -168,6 +166,7 @@ public class MainActivity extends BaseActivity {
 
 
     }
+
     private GalleryFinal.OnHanlderResultCallback mOnHanlderResultCallback = new GalleryFinal.OnHanlderResultCallback() {
         @Override
         public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
@@ -175,10 +174,10 @@ public class MainActivity extends BaseActivity {
             if (resultList != null) {
                 Uri uri = Uri.parse("file://" + resultList.get(0).getPhotoPath());
                 Log.e("data", uri.toString());
-                File file=new File(resultList.get(0).getPhotoPath());
+                File file = new File(resultList.get(0).getPhotoPath());
 
-               CommonFunction.ImagLoadPic(MainActivity.this,uri,img_avatar_nav);
-                UpLoadFile( resultList.get(0).getPhotoPath());
+                CommonFunction.ImagLoadPic(MainActivity.this, uri, img_avatar_nav);
+                UpLoadFile(resultList.get(0).getPhotoPath());
 
             }
         }
@@ -189,13 +188,15 @@ public class MainActivity extends BaseActivity {
         }
     };
 
-    private void UpLoadFile(String  path){
+    private void UpLoadFile(String path) {
+        CommonFunction.progressDialogShow(this,"正在上传");
         RetrofitMethod.uploadPic(path, new RetrofitService.OnResponeListener<BaseResponse>() {
             @Override
             public void onSuccess(BaseResponse respone) {
-                if(null!=respone){
+                CommonFunction.progressDialogDismiss();
+                if (null != respone) {
                     showToast("成功");
-                }else{
+                } else {
                     showToast("空");
                 }
 
@@ -204,26 +205,25 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onFailure(String value) {
                 showToast(value);
+                CommonFunction.progressDialogDismiss();
             }
         });
 
     }
 
-    private CaptureConfiguration createCaptureConfiguration() {
-        CaptureConfiguration.Builder builder = new CaptureConfiguration.Builder(PredefinedCaptureConfigurations.CaptureResolution.RES_1080P, PredefinedCaptureConfigurations.CaptureQuality.HIGH);
-        return builder.build();
-    }
-    private PredefinedCaptureConfigurations.CaptureQuality getQuality(int position) {
-        final PredefinedCaptureConfigurations.CaptureQuality[] quality = new PredefinedCaptureConfigurations.CaptureQuality[]{PredefinedCaptureConfigurations.CaptureQuality.HIGH, PredefinedCaptureConfigurations.CaptureQuality.MEDIUM,
-                PredefinedCaptureConfigurations.CaptureQuality.LOW};
-        return quality[position];
-    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode== Activity.RESULT_OK){
+            if(requestCode==100){
+                if(null!=data){
+                    String videoPath=data.getStringExtra("videoPath");
+                    Log.e("data", videoPath);
+                    UpLoadFile(videoPath);
+                }
 
-    private PredefinedCaptureConfigurations.CaptureResolution getResolution(int position) {
-        final PredefinedCaptureConfigurations.CaptureResolution[] resolution = new PredefinedCaptureConfigurations.CaptureResolution[]{PredefinedCaptureConfigurations.CaptureResolution.RES_1080P,
-                PredefinedCaptureConfigurations.CaptureResolution.RES_720P, PredefinedCaptureConfigurations.CaptureResolution.RES_480P};
-        return resolution[position];
+            }
+
+        }
     }
-
-
 }

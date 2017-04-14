@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -117,5 +119,30 @@ public class CommonFunction {
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .into(imageView);
 
+    }
+
+    /**
+     * 获取视频缩略图*
+     */
+    public static Bitmap getVideoImg(String filePath) {
+        Bitmap bitmap = null;
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        try {
+            retriever.setDataSource(filePath);
+            bitmap = retriever.getFrameAtTime();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // retriever.release();
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        return bitmap;
     }
 }
