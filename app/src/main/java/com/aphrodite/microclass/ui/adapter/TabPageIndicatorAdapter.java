@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.aphrodite.microclass.ui.fragment.HomeFragment;
+import com.aphrodite.microclass.ui.fragment.MyVideoFragment;
 import com.aphrodite.microclass.ui.fragment.VideoFragment;
 
 import java.util.ArrayList;
@@ -27,13 +28,12 @@ public class TabPageIndicatorAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         //新建一个Fragment来展示ViewPager item的内容，并传递参数
         HomeFragment mainFragment1 = new HomeFragment();
-        HomeFragment mainFragment2 = new HomeFragment();
-        VideoFragment videoFragment1 = new VideoFragment();
+        MyVideoFragment myVideo = new MyVideoFragment();
         VideoFragment videoFragment2 = new VideoFragment();
         List<Fragment> list = new ArrayList<>();
+        list.add(myVideo);
         list.add(mainFragment1);
-        list.add(videoFragment1);
-        list.add(mainFragment2);
+        list.add(videoFragment2);
         list.add(videoFragment2);
         Bundle bundle = new Bundle();
         bundle.putInt("position", position);

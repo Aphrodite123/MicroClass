@@ -50,7 +50,7 @@ public class MainActivity extends BaseActivity {
     ImageView img_avatar_nav;
     SelectPhotoDialog photoDialog;
     private boolean isShowDetail = false;//是否显示查看原图
-    List<String> topName = Arrays.asList("头条", "视频", "开心一刻", "浏览记录");
+    List<String> topName = Arrays.asList("我的视频", "我的文章", "开心一刻", "糗事百科");
 
     @BindView(R.id.autograph_text)
     AutoTextView autograph_text;
@@ -177,7 +177,7 @@ public class MainActivity extends BaseActivity {
                 File file = new File(resultList.get(0).getPhotoPath());
 
                 CommonFunction.ImagLoadPic(MainActivity.this, uri, img_avatar_nav);
-                UpLoadFile(resultList.get(0).getPhotoPath());
+                UpLoadFile(resultList.get(0).getPhotoPath(),"");
 
             }
         }
@@ -188,9 +188,9 @@ public class MainActivity extends BaseActivity {
         }
     };
 
-    private void UpLoadFile(String path) {
+    private void UpLoadFile(String path,String imgPatch) {
         CommonFunction.progressDialogShow(this,"正在上传");
-        RetrofitMethod.uploadPic(path, new RetrofitService.OnResponeListener<BaseResponse>() {
+        RetrofitMethod.upVideoPatch(path,imgPatch, new RetrofitService.OnResponeListener<BaseResponse>() {
             @Override
             public void onSuccess(BaseResponse respone) {
                 CommonFunction.progressDialogDismiss();
@@ -218,8 +218,10 @@ public class MainActivity extends BaseActivity {
             if(requestCode==100){
                 if(null!=data){
                     String videoPath=data.getStringExtra("videoPath");
+                    String bitMapPath=data.getStringExtra("bitMapPath");
+
                     Log.e("data", videoPath);
-                    UpLoadFile(videoPath);
+                    UpLoadFile(videoPath,bitMapPath);
                 }
 
             }

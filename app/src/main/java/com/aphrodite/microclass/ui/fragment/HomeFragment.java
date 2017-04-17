@@ -11,6 +11,8 @@ import com.aphrodite.microclass.base.BaseFragment;
  */
 
 public class HomeFragment extends BaseFragment {
+
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_home;
@@ -25,9 +27,18 @@ public class HomeFragment extends BaseFragment {
 
     private void initView() {
 
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     private void initListener() {
 
     }
+
 }

@@ -145,4 +145,6 @@ public class CommonFunction {
 
         return bitmap;
     }
+
+
 }
