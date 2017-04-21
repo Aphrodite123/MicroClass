@@ -404,6 +404,9 @@ public class ShootVideoActivity extends Activity implements View.OnClickListener
                     }
                     flag = 1;
                 } else if (flag == 1) {//第二次点击状态
+                    mediaRecorder.setOnErrorListener(null);
+                    mediaRecorder.setOnInfoListener(null);
+                    mediaRecorder.setPreviewDisplay(null);
                     mediaRecorder.stop();//停止记录
                     handler.removeCallbacks(task);//关闭计时器
                     timer.setText(format(0) + ":" + format(0) + ":" + format(0));
@@ -504,7 +507,7 @@ public class ShootVideoActivity extends Activity implements View.OnClickListener
      * @return 返回SD卡下的指定文件夹对象，若文件夹不存在则创建
      */
     public static String getSaveFolder() {
-        File dirFile = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "MircroClass");
+        File dirFile = new File( "/sdcard/" + "MircroClass");
         if (!dirFile.exists()) {
             dirFile.mkdirs();
         }

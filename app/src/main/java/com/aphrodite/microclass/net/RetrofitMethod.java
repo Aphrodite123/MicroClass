@@ -1,5 +1,7 @@
 package com.aphrodite.microclass.net;
 
+import android.util.Log;
+
 import com.aphrodite.microclass.ui.model.BaseResponse;
 import com.aphrodite.microclass.ui.model.FunnyXunLeiResponse;
 import com.aphrodite.microclass.ui.model.VideoResponse;
@@ -55,10 +57,10 @@ public class RetrofitMethod {
      *
      * @param listener
      */
-    public static void upVideoPatch(String filePath, String videoImag,
+    public static void upVideoPatch(String filePath, String videoImag, String title,
                                     RetrofitService.OnResponeListener<BaseResponse> listener) {
         RequestBody requestFile;
-        List<MultipartBody.Part> body  = new ArrayList<>();
+        List<MultipartBody.Part> body = new ArrayList<>();
         File fileVideo = new File(filePath);
         File fileimg = new File(videoImag);
         List<File> fileList = new ArrayList<>();
@@ -68,8 +70,15 @@ public class RetrofitMethod {
             requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
             body.add(MultipartBody.Part.createFormData("file", file.getName(), requestFile));
         }
+        Map<String, String> map = new HashMap<>();
+        map.put("token", "ew");
+        map.put("videoTitle", title);
+        JSONObject object = new JSONObject(map);
+        String data = object.toString();
+        Log.e("data", data);
+
         RetrofitService retrofitService = new RetrofitService(BaseResponse.class);
-        retrofitService.retrofitPost(RetrofitAPIManager.provideClientApi("2").uploadVideo(body), listener);
+        retrofitService.retrofitPost(RetrofitAPIManager.provideClientApi("2").uploadVideo(data, body), listener);
 
 
     }

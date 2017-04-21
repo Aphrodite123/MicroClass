@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <!--往sdcard中写入数据的权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
@@ -40,7 +40,8 @@
         android:icon="@mipmap/classroom"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/ToolbarAppTheme">
+
+        >
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,10 +49,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--拍摄上传页面-->
         <activity
-            android:name="com.aphrodite.microclass.ui.activity.ShootVideoActivity"
+            android:name="com.aphrodite.microclass.ui.activity.VideoUpLoadActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:windowSoftInputMode="stateHidden|stateUnchanged" />
+        <!--横屏拍摄视频页面-->
+        <activity
+            android:name="com.jmolsmobile.landscapevideocapture.VideoCaptureActivity"
+            android:screenOrientation="sensor"></activity>
     </application>
 
 </manifest>

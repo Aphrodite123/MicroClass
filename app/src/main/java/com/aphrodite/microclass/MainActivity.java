@@ -1,7 +1,5 @@
 package com.aphrodite.microclass;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -16,11 +14,8 @@ import android.widget.ImageView;
 import com.aphrodite.microclass.base.BaseActivity;
 import com.aphrodite.microclass.base.ProjectApplication;
 import com.aphrodite.microclass.constant.Config;
-import com.aphrodite.microclass.net.RetrofitMethod;
-import com.aphrodite.microclass.net.RetrofitService;
-import com.aphrodite.microclass.ui.activity.ShootVideoActivity;
+import com.aphrodite.microclass.ui.activity.VideoUpLoadActivity;
 import com.aphrodite.microclass.ui.adapter.TabPageIndicatorAdapter;
-import com.aphrodite.microclass.ui.model.BaseResponse;
 import com.aphrodite.microclass.util.CommonFunction;
 import com.aphrodite.microclass.util.PermissionUtil;
 import com.aphrodite.microclass.widget.AutoTextView;
@@ -111,11 +106,11 @@ public class MainActivity extends BaseActivity {
                 showDialog();
                 break;
             case R.id.autograph_text:
-                CommonFunction.redirectActivity(MainActivity.this, ShootVideoActivity.class, null);
+                CommonFunction.redirectActivity(MainActivity.this, VideoUpLoadActivity.class, null);
                 break;
             case R.id.floatingActionButton:
-                Intent intent = new Intent(MainActivity.this, ShootVideoActivity.class);
-                startActivityForResult(intent, 100);
+                CommonFunction.redirectActivity(MainActivity.this, VideoUpLoadActivity.class, null);
+
                 break;
         }
     }
@@ -177,7 +172,7 @@ public class MainActivity extends BaseActivity {
                 File file = new File(resultList.get(0).getPhotoPath());
 
                 CommonFunction.ImagLoadPic(MainActivity.this, uri, img_avatar_nav);
-                UpLoadFile(resultList.get(0).getPhotoPath(),"");
+                UpLoadheadFile(resultList.get(0).getPhotoPath());
 
             }
         }
@@ -188,44 +183,9 @@ public class MainActivity extends BaseActivity {
         }
     };
 
-    private void UpLoadFile(String path,String imgPatch) {
-        CommonFunction.progressDialogShow(this,"正在上传");
-        RetrofitMethod.upVideoPatch(path,imgPatch, new RetrofitService.OnResponeListener<BaseResponse>() {
-            @Override
-            public void onSuccess(BaseResponse respone) {
-                CommonFunction.progressDialogDismiss();
-                if (null != respone) {
-                    showToast("成功");
-                } else {
-                    showToast("空");
-                }
 
-            }
-
-            @Override
-            public void onFailure(String value) {
-                showToast(value);
-                CommonFunction.progressDialogDismiss();
-            }
-        });
+    private void UpLoadheadFile(String head) {
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode== Activity.RESULT_OK){
-            if(requestCode==100){
-                if(null!=data){
-                    String videoPath=data.getStringExtra("videoPath");
-                    String bitMapPath=data.getStringExtra("bitMapPath");
-
-                    Log.e("data", videoPath);
-                    UpLoadFile(videoPath,bitMapPath);
-                }
-
-            }
-
-        }
-    }
 }

@@ -35,7 +35,7 @@ public interface RetrofitAPI {
 
     @Multipart
     @POST("/sma-upload/simpleFileupload")
-    Call<BaseResponse> uploadVideo(@Part List<MultipartBody.Part> files);
+    Call<BaseResponse> uploadVideo(@Part("data") String data, @Part List<MultipartBody.Part> files);
 
     /**
      * 根据ID获取报警信息

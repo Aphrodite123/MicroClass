@@ -6,8 +6,12 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
-    <style name="ToolbarAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+    <style name="ToolbarAppTheme" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <!--Toolbar颜色-->

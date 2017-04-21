@@ -20,7 +20,7 @@ public class RetrofitAPIManager {
      * 迅雷URl
      */
     public static String BASE_URL_XUNLEI = "http://api-shoulei-ssl.xunlei.com";
-    public static String BAE_URL_NEW="http://192.168.1.19:8080";
+    public static String BAE_URL_NEW="http://192.168.0.102:8080";
 
     public static final int DEFAULT_TIMEOUT = 5;
 

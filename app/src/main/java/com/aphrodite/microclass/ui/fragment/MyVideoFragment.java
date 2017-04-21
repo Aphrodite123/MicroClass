@@ -17,12 +17,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
 
 /**
  * Created by smy on 2017/4/17 0017.
  */
 
-public class MyVideoFragment  extends BaseFragment {
+public class MyVideoFragment extends BaseFragment {
+    @BindView(R.id.fragment_ptr_home_ptr_frame)
+    PtrFrameLayout ptrFrameLayout;
     List<VideoResponse.Data> dataList = new ArrayList<>();
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
@@ -37,7 +41,9 @@ public class MyVideoFragment  extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initView();
+        initRefreshView(ptrFrameLayout);
         initListener();
+        initData();
     }
 
     private void initView() {
@@ -45,8 +51,6 @@ public class MyVideoFragment  extends BaseFragment {
 
         adapterVideoList = new RecycleMyUpVideoAdapter(getActivity());
         recyclerView.setAdapter(adapterVideoList);
-        CommonFunction.progressDialogShow(getActivity(), "正在加载数据");
-        loadData();
 
 
     }
@@ -54,6 +58,8 @@ public class MyVideoFragment  extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        CommonFunction.progressDialogShow(getActivity(), "正在加载数据");
+        loadData();
 
     }
 
@@ -61,10 +67,22 @@ public class MyVideoFragment  extends BaseFragment {
 
     }
 
+    private void initData() {
+
+        ptrFrameLayout.setPtrHandler(new PtrDefaultHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                loadData();
+            }
+        });
+
+    }
+
     private void loadData() {
         RetrofitMethod.getvideoInfo(new RetrofitService.OnResponeListener<VideoResponse>() {
             @Override
             public void onSuccess(VideoResponse respone) {
+                ptrFrameLayout.refreshComplete();
                 if (null != dataList) {
                     dataList.clear();
                     dataList = respone.data;
